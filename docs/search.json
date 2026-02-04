@@ -7,11 +7,39 @@
     "text": "About this blog"
   },
   {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
-    "title": "Welcome To My Blog",
+    "objectID": "posts/first_blog_post/index.html",
+    "href": "posts/first_blog_post/index.html",
+    "title": "Premier League Blog Post",
     "section": "",
-    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+    "text": "The dataset used in this analysis contains English Premier League match data from the 2021-2022 season. The dataset includes 380 observations, corresponding to the 380 matches played over the course of a full season. Each match records performance statistics for both the home and away teams.\nThe variables I am most interested in are shots taken and fouls committed by the home and away teams. These variables provide insight into team playing styles, particularly whether home teams tend to play a more attacking style by generating more shots, and whether away teams are forced into a more defensive approach, potentially committing more fouls. Other metrics to also consider are corner kicks and yellow cards, as teams typically win more corners the more they attack, while yellow cards can indicate defensive play or time wasting tactics.\nThis leads to my primary question of interest:\nDo home teams play a more attacking style of soccer, while away teams adopt a more defensive style of play?\nThis data was accessed through the TidyTuesday project on a GitHub repository. The original source of the data is from Evan Gower on Kaggle.\nSome additional context about the Premier League is important for interpreting this data. The league consists of 20 teams, with each team playing 38 matches, once at home and once away against every other team. Match outcomes are scored as 3 points for a win, 1 point for a draw, and 0 points for a loss. Playing at home is widely believed to provide a competitive advantage due to factors such as crowd support, less traveling, better stadium amenities, and even differences in pitch dimensions.\nAs a result, teams often approach away matches more conservatively. Securing a draw away from home is typically considered a successful outcome, which encourages defensive strategies. In contrast, home matches are seen as opportunities to earn the maximum number of points, leading teams to adopt a more attacking style of play. Away teams may also attempt to slow the pace of the game through fouling or time-wasting, which can be reflected in higher foul counts and yellow cards.\nOverall, these contextual factors motivate an exploration of whether match statistics such as shots taken and fouls committed support the commonly held belief that home teams attack more, while away teams defend more."
+  },
+  {
+    "objectID": "posts/first_blog_post/index.html#setting-up-the-data",
+    "href": "posts/first_blog_post/index.html#setting-up-the-data",
+    "title": "Premier League Blog Post",
+    "section": "Setting up the Data",
+    "text": "Setting up the Data\n\nlibrary(tidyverse)\n\n\nsoccer &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2023/2023-04-04/soccer21-22.csv')\n\n\nsoccer &lt;- soccer |&gt; mutate(shot_diff = HS - AS,\n                 foul_diff = HF - AF,\n                 corner_diff = HC - AC)"
+  },
+  {
+    "objectID": "posts/first_blog_post/index.html#plot-1-difference-in-shots-home-vs-away",
+    "href": "posts/first_blog_post/index.html#plot-1-difference-in-shots-home-vs-away",
+    "title": "Premier League Blog Post",
+    "section": "Plot 1: Difference in Shots: Home vs Away",
+    "text": "Plot 1: Difference in Shots: Home vs Away\n\nggplot(data = soccer, aes(x = shot_diff)) +\n  geom_histogram(binwidth = 4) +\n  geom_vline(xintercept = 0, linetype = \"dashed\") +\n  labs( title = \"Difference in Shots: Home vs Away\", \n        x = \"Home Shots − Away Shots\", \n        y = \"Number of Matches\") +\n  xlim(-29,29) +\n  theme_minimal()\n\n\n\n\n\n\n\n\nThe distribution of the histogram is approximately normal, with its peak occurring when the home teams holds a 2-6 shot advantage. Looking at extreme shot differences, the home team out shooting the away team by 15 or more shots is more common than the other way around. This pattern suggests that home teams are generally more likely to play an attacking style of soccer. However, there is still a presence of negative values showing that matches end with the away team taking more shots. This indicates the home field advantage alone does not fully determine a team’s style of play, and that other factors such as overall team quality likely plays a role."
+  },
+  {
+    "objectID": "posts/first_blog_post/index.html#plot-2-difference-in-fouls-home-vs-away",
+    "href": "posts/first_blog_post/index.html#plot-2-difference-in-fouls-home-vs-away",
+    "title": "Premier League Blog Post",
+    "section": "Plot 2: Difference in Fouls: Home vs Away",
+    "text": "Plot 2: Difference in Fouls: Home vs Away\n\nggplot(data = soccer, aes(x = foul_diff)) +\n  geom_histogram(binwidth = 3) +\n  geom_vline(xintercept = 0, linetype = \"dashed\") +\n  labs( title = \"Difference in Fouls: Home vs Away\", \n        x = \"Home Fouls − Away Fouls\", \n        y = \"Number of Matches\") + \n  xlim(-20, 20) +\n  theme_minimal()\n\n\n\n\n\n\n\n\nThe histogram peaks around a shot difference of 0, showing that in most matches there is little to no difference in the number of fouls committed by the home and away teams. However, the distribution is skewed to the left, with several negative outliers where the away team has committed many more fouls. This suggests that in certain matches, away teams are forced into a more defensive style of play, relying heavily on fouling to disrupt the home team’s attacks and slow the pace of the game."
+  },
+  {
+    "objectID": "posts/first_blog_post/index.html#plot-3-shot-difference-by-match-outcome",
+    "href": "posts/first_blog_post/index.html#plot-3-shot-difference-by-match-outcome",
+    "title": "Premier League Blog Post",
+    "section": "Plot 3: Shot Difference by Match Outcome",
+    "text": "Plot 3: Shot Difference by Match Outcome\n\nggplot(data = soccer, aes(x = FTR, y = shot_diff, fill = FTR)) +\n  geom_boxplot() +\n  geom_hline(yintercept = 0, linetype = \"dashed\") + \n  scale_x_discrete(labels = c(\"A\" = \"Away Win\", \"D\" = \"Draw\", \"H\" = \"Home Win\")) +\n  labs( title = \"Shot Difference by Match Outcome\", \n        x = \"Final Match Result\", \n        y = \"Home Shots − Away Shots\") + \n  theme_minimal() + \n  ylim(-29, 29) +\n  theme(legend.position = \"none\") +\n  coord_flip()\n\n\n\n\n\n\n\n\nThe boxplots show a clear relationship between shot difference and the final match result. When the away team wins, the median shot difference is around -2, meaning that away victories typically occur when the away team is able to generate slightly more attacking opportunities than the home team.\nFor drawn matches, the median shot difference is about 2 suggesting that home teams still tend to take more shots even when the match ends level. Which is consistent with the idea that away teams often play more defensively and are satisfied with drawing matches away from home. When the home team wins, the median show difference rises to around 7, showing that home victories are strongly associated with attacking play style where the home team dominates the possession of the ball.\nOverall, this plot supports the narrative that home teams generally play a more attacking style, while the away team adopts more defensive strategies. The plot also shows that the amount of attacking pressure a team can apply is potentially associated with the outcome of the match."
   },
   {
     "objectID": "posts/post-with-code/index.html",
@@ -21,10 +49,17 @@
     "text": "This is a post with executable code.\n\n1 + 1\n\n[1] 2"
   },
   {
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome To My Blog",
+    "section": "",
+    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "ds334_blog",
     "section": "",
-    "text": "Post With Code\n\n\n\nnews\n\ncode\n\nanalysis\n\n\n\n\n\n\n\n\n\nJan 28, 2026\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJan 25, 2026\n\n\nTristan O’Malley\n\n\n\n\n\nNo matching items"
+    "text": "Premier League Blog Post\n\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nFeb 4, 2026\n\n\nCooper Olney\n\n\n\n\n\n\n\n\n\n\n\n\nPost With Code\n\n\n\nnews\n\ncode\n\nanalysis\n\n\n\n\n\n\n\n\n\nJan 28, 2026\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJan 25, 2026\n\n\nTristan O’Malley\n\n\n\n\n\nNo matching items"
   }
 ]
