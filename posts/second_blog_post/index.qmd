@@ -10,7 +10,7 @@ categories: [analysis]
 The data used in this analysis contains data on NFL stadium attendance, as well as time and day data on NFL games from the 2019 season (only games played during 2019) The dataset includes 299 observations, corresponding to the games played during this time period.
 
 The variables I am most interested in are the weekly stadium attendance count which represents attendance for a single game, along with the day of week, time of day, and week within season the game took place. These variables provide insight into how attendance changes depending on when a game is played.
-
+ 
 This leads to my primary question of interest:
 
 **How does NFL stadium attendance vary by day of the week, kickoff time, and week within the season**
