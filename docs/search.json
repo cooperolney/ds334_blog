@@ -42,13 +42,6 @@
     "text": "Plot 3: Shot Difference by Match Outcome\n\nggplot(data = soccer, aes(x = FTR, y = shot_diff, fill = FTR)) +\n  geom_boxplot() +\n  geom_hline(yintercept = 0, linetype = \"dashed\") + \n  scale_x_discrete(labels = c(\"A\" = \"Away Win\", \"D\" = \"Draw\", \"H\" = \"Home Win\")) +\n  labs( title = \"Shot Difference by Match Outcome\", \n        x = \"Final Match Result\", \n        y = \"Home Shots − Away Shots\") + \n  theme_minimal() + \n  ylim(-29, 29) +\n  theme(legend.position = \"none\") +\n  coord_flip()\n\n\n\n\n\n\n\n\nThe boxplots show a clear relationship between shot difference and the final match result. When the away team wins, the median shot difference is around -2, meaning that away victories typically occur when the away team is able to generate slightly more attacking opportunities than the home team.\nFor drawn matches, the median shot difference is about 2 suggesting that home teams still tend to take more shots even when the match ends level. Which is consistent with the idea that away teams often play more defensively and are satisfied with drawing matches away from home. When the home team wins, the median show difference rises to around 7, showing that home victories are strongly associated with attacking play style where the home team dominates the possession of the ball.\nOverall, this plot supports the narrative that home teams generally play a more attacking style, while the away team adopts more defensive strategies. The plot also shows that the amount of attacking pressure a team can apply is potentially associated with the outcome of the match."
   },
   {
-    "objectID": "posts/post-with-code/index.html",
-    "href": "posts/post-with-code/index.html",
-    "title": "Post With Code",
-    "section": "",
-    "text": "This is a post with executable code.\n\n1 + 1\n\n[1] 2"
-  },
-  {
     "objectID": "posts/welcome/index.html",
     "href": "posts/welcome/index.html",
     "title": "Welcome To My Blog",
@@ -56,11 +49,11 @@
     "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "ds334_blog",
+    "objectID": "posts/post-with-code/index.html",
+    "href": "posts/post-with-code/index.html",
+    "title": "Post With Code",
     "section": "",
-    "text": "NFL Stadium Attendance Blog Post\n\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nFeb 17, 2026\n\n\nCooper Olney\n\n\n\n\n\n\n\n\n\n\n\n\nPremier League Blog Post\n\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nFeb 4, 2026\n\n\nCooper Olney\n\n\n\n\n\n\n\n\n\n\n\n\nPost With Code\n\n\n\nnews\n\ncode\n\nanalysis\n\n\n\n\n\n\n\n\n\nJan 28, 2026\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJan 25, 2026\n\n\nTristan O’Malley\n\n\n\n\n\nNo matching items"
+    "text": "This is a post with executable code.\n\n1 + 1\n\n[1] 2"
   },
   {
     "objectID": "posts/second_blog_post/index.html",
@@ -96,5 +89,12 @@
     "title": "NFL Stadium Attendance Blog Post",
     "section": "Plot 3: NFL Stadium Attendance by Date, Day, and Time Slot",
     "text": "Plot 3: NFL Stadium Attendance by Date, Day, and Time Slot\n\nggplot(nfl_data, aes(x = date, y = weekly_attendance, color = time_slot)) +\n  geom_point() + \n  facet_wrap(~day, ncol = 1) +\n  xlim(as.Date(\"2019-09-01\"), as.Date(\"2020-01-05\")) +\n  labs(\n    title = \"NFL Stadium Attendance by Date, Day, and Time Slot\",\n    x = \"Date\",\n    y = \"Stadium Attendance\",\n    color = \"Time Slot\"\n  )\n\n\n\n\n\n\n\n\nThis final plot examines how day of the week, time of day, and week within the season jointly relates to stadium attendance. Looking first at Monday games, all of them occur in the primetime slot. Attendance for these games generally falls between 60,000 and 80,00 attendees, reflecting the importance of Monday Night Football and the tendency to schedule high profile games during this time.\nFor Thursday games, most also take place during the primetime slot, with the exception of a few games in late November. These are the Thanksgiving Day games, which include an afternoon game. This games shows the highest attendance among Thursday games largely because it was hosted by the Dallas Cowboys, who have the largest stadium in the NFL, and it is a NFL tradition for the Cowboys to host a Thanksgiving game. There are also a small number of Saturday games, which tpyically occur late in the season once the college football regular season has finished. These games provide additional national viewing opportunities and tend to follow similar attendance patterns to Sunday games.\nSunday games make up the majority of the schedule and include games across all three time slots. Most Sunday games fall between 60,000 and 80,000 attendees, though there are some outliers due to differences in stadium capacity. Compared to weekday games, there are more games below 60,000 attendees largerly because many Sunday matchups are played in the midday and afternoon time slots, which tend to draw slightly smaller crowds on average.\nOverall, across the full season, attendance appears relatively stable, with variations more strongly associated with time slot and stadium capacity than with the specific week of the season."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ds334_blog",
+    "section": "",
+    "text": "NFL Stadium Attendance Blog Post\n\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nFeb 17, 2026\n\n\nCooper Olney\n\n\n\n\n\n\n\n\n\n\n\n\nPremier League Blog Post\n\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nFeb 4, 2026\n\n\nCooper Olney\n\n\n\n\n\n\n\n\n\n\n\n\nPost With Code\n\n\n\nnews\n\ncode\n\nanalysis\n\n\n\n\n\n\n\n\n\nJan 28, 2026\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJan 25, 2026\n\n\nTristan O’Malley\n\n\n\n\n\nNo matching items"
   }
 ]
