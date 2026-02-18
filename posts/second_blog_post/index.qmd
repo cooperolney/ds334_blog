@@ -1,7 +1,7 @@
 ---
 title: "NFL Stadium Attendance Blog Post"
 author: "Cooper Olney"
-date: "2026-02-17"
+date: "2026-02-18"
 categories: [analysis]
 ---
 

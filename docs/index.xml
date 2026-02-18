@@ -10,7 +10,7 @@
 <atom:link href="https://your-website-url.example.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog built with Quarto</description>
 <generator>quarto-1.8.25</generator>
-<lastBuildDate>Tue, 17 Feb 2026 05:00:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 18 Feb 2026 05:00:00 GMT</lastBuildDate>
 <item>
   <title>NFL Stadium Attendance Blog Post</title>
   <dc:creator>Cooper Olney</dc:creator>
@@ -502,7 +502,7 @@ font-style: inherit;">"Time Slot"</span></span>
  ]]></description>
   <category>analysis</category>
   <guid>https://your-website-url.example.com/posts/second_blog_post/</guid>
-  <pubDate>Tue, 17 Feb 2026 05:00:00 GMT</pubDate>
+  <pubDate>Wed, 18 Feb 2026 05:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Premier League Blog Post</title>
