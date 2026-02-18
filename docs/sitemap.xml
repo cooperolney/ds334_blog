@@ -20,4 +20,8 @@
     <loc>https://your-website-url.example.com/index.html</loc>
     <lastmod>2026-01-28T18:56:40.221Z</lastmod>
   </url>
+  <url>
+    <loc>https://your-website-url.example.com/posts/second_blog_post/index.html</loc>
+    <lastmod>2026-02-18T02:11:50.643Z</lastmod>
+  </url>
 </urlset>

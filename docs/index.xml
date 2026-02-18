@@ -10,7 +10,495 @@
 <atom:link href="https://your-website-url.example.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog built with Quarto</description>
 <generator>quarto-1.8.25</generator>
-<lastBuildDate>Wed, 04 Feb 2026 05:00:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 17 Feb 2026 05:00:00 GMT</lastBuildDate>
+<item>
+  <title>NFL Stadium Attendance Blog Post</title>
+  <dc:creator>Cooper Olney</dc:creator>
+  <link>https://your-website-url.example.com/posts/second_blog_post/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>The data used in this analysis contains data on NFL stadium attendance, as well as time and day data on NFL games from the 2019 season (only games during 2019) The data set includes 299 observations, corresponding to the games played over this time period.</p>
+<p>The variables I am most interested in are the weekly stadium attendance count which is the attendance for a single game, and the day of week, time of day and week of the season the game took place. These variables provide insight into how many people attend NFL games depending on how chese variables change.</p>
+<p>This leads to my primary question of interest:</p>
+<p><strong>How does NFL stadium attendance vary by day of the week, kickoff time, and week within the season</strong></p>
+<p>The data was accessed through the TidyTuesday project on a GitHub repository. The original source of the data is from Pro Football Reference.</p>
+<p>Some additional context about the NFL is important for interpreting this data. The league consists of 32 teams across the United States, meaning some teams play in colder climates than others, but some teams also play indoor stadiums where the outdoor climate doesn’t impact the attendees experience. So further into the season when it is in November and December, some teams could see a drop in attendance because of the colder conditions.</p>
+<p>Also games are played at either a midday, afternoon, or a primetime slot, on the east coast these times correspond roughly to 1:00pm, 4:00pm, and 8:00pm. The time the game starts could also affect the attendance at the game because of travel concerns getting to the stadium and leaving the stadium at reasonable times. NFL games are typically played on Monday, Thursday or Sunday, with a few exceptions. This ties into the tie of day as Monday and Thursday games are also played during the primetime slot with a few exceptions, so attendance is impacted because of people’s work conflicts and prior commitments.</p>
+<p>Overall, these contextual factors motivate an exploration of how NFL stadium attendance is impacted by day of the week, kickoff time, and week within the season.</p>
+</section>
+<section id="primary-visualizations" class="level1">
+<h1>Primary Visualizations</h1>
+<section id="setting-up-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="setting-up-the-data">Setting up the Data</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidyverse)</span></code></pre></div></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">attendance <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> readr<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2020/2020-02-04/attendance.csv'</span>)</span>
+<span id="cb2-2">games <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> readr<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2020/2020-02-04/games.csv'</span>)</span></code></pre></div></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Data Prep</span></span>
+<span id="cb3-2">games <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> games <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">week =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.numeric</span>(week))</span></code></pre></div></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: There was 1 warning in `mutate()`.
+ℹ In argument: `week = as.numeric(week)`.
+Caused by warning:
+! NAs introduced by coercion</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">nfl_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> games <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">left_join</span>(attendance, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"home_team_city"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"team"</span>,</span>
+<span id="cb5-3">                               <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"year"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"year"</span>,</span>
+<span id="cb5-4">                               <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"week"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"week"</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(year <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2019</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">select</span>(week, home_team, day, date, time, weekly_attendance) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(</span>
+<span id="cb5-8">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">day =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(day, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">levels =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Mon"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Tue"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Wed"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Thu"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Fri"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sat"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sun"</span>)),</span>
+<span id="cb5-9">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">date =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mdy</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">paste0</span>(date, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">", "</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2019</span>)),</span>
+<span id="cb5-10">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">hour =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">hour</span>(time),</span>
+<span id="cb5-11">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">time_slot =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">case_when</span>(</span>
+<span id="cb5-12">      hour <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">13.5</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Midday"</span>,</span>
+<span id="cb5-13">      hour <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">17</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Afternoon"</span>,</span>
+<span id="cb5-14">      hour <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">19</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Primetime"</span>,</span>
+<span id="cb5-15">      <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Other"</span></span>
+<span id="cb5-16">    )</span>
+<span id="cb5-17">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-18">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">time_slot =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(time_slot, </span>
+<span id="cb5-19">                            <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">levels =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Midday"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Afternoon"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Primetime"</span>)))</span></code></pre></div></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in left_join(games, attendance, by = c(home_team_city = "team", : Detected an unexpected many-to-many relationship between `x` and `y`.
+ℹ Row 9 of `x` matches multiple rows in `y`.
+ℹ Row 853 of `y` matches multiple rows in `x`.
+ℹ If a many-to-many relationship is expected, set `relationship =
+  "many-to-many"` to silence this warning.</code></pre>
+</div>
+</div>
+</section>
+<section id="plot-1-mean-nfl-stadium-attendance-by-week" class="level2">
+<h2 class="anchored" data-anchor-id="plot-1-mean-nfl-stadium-attendance-by-week">Plot 1: Mean NFL Stadium Attendance by Week</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">nfl_data <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb7-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">group_by</span>(week) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb7-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summarise</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mean_attendance =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mean</span>(weekly_attendance, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">na.rm =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb7-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> week, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> mean_attendance)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_segment</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> week, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xend =</span> week, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">yend =</span> mean_attendance)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_point</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(</span>
+<span id="cb7-8">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Mean NFL Stadium Attendance by Week"</span>,</span>
+<span id="cb7-9">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Week of Season"</span>,</span>
+<span id="cb7-10">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Average Attendance"</span></span>
+<span id="cb7-11">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>()</span></code></pre></div></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://your-website-url.example.com/posts/second_blog_post/index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>From the lollipop plot, we can see that within the 2019 NFL season, the average stadium attendance didn’t differ that much by week. It is interesting that the lowest average was in week 6 at around 64,000 attendees and the highest average was in week 7 at around 69,000 attendees. Both of these weeks occurred during mid October and no major events come to mind why these numbers are the furthest apart. A potential reason for the increase in attendance from week 6 to 7 is that there were more exciting games because better teams were playing each other or more rivalry games happened. Overall, this plot shows that the average NFL stadium attendance doesn’t change that much from week to week.</p>
+</section>
+<section id="plot-2-nfl-stadium-attendance-by-time-slot" class="level2">
+<h2 class="anchored" data-anchor-id="plot-2-nfl-stadium-attendance-by-time-slot">Plot 2: NFL Stadium Attendance by Time Slot</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(nfl_data, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> time_slot, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> weekly_attendance, </span>
+<span id="cb8-2">                     <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> time_slot)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb8-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_boxplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb8-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(</span>
+<span id="cb8-5">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"NFL Stadium Attendance by Time Slot"</span>,</span>
+<span id="cb8-6">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Time Slot"</span>,</span>
+<span id="cb8-7">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Weekly Attendance"</span></span>
+<span id="cb8-8">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb8-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb8-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"none"</span>)</span></code></pre></div></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://your-website-url.example.com/posts/second_blog_post/index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>From the side-by-side boxplot, we can see are NFL stadium attendance was impacted by the game’s time slot in the 2019 season. The median attendance is the highest for primetime games which make sense as the NFL typically schedules the best games for the primetime slot. The midday time slot has the lowest median attendance this also makes sense as the worst games are typically scheduled for this time. Looking at the outliers and the nfl_data dataframe, the high outliers come from the Dallas Cowboys as they have the largest stadium in the NFL so they can hold more people. The low outliers mainly come from the Los Angeles Chargers who played in a smaller soccer stadium during the 2019 season as they were in the process of moving permanent stadiums.</p>
+</section>
+<section id="plot-3-nfl-stadium-attendance-by-date-day-and-time-slot" class="level2">
+<h2 class="anchored" data-anchor-id="plot-3-nfl-stadium-attendance-by-date-day-and-time-slot">Plot 3: NFL Stadium Attendance by Date, Day, and Time Slot</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(nfl_data, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> date, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> weekly_attendance, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> time_slot)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb9-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_point</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb9-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">facet_wrap</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span>day, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ncol =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb9-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">xlim</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.Date</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2019-09-01"</span>), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.Date</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2020-01-05"</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb9-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(</span>
+<span id="cb9-6">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"NFL Stadium Attendance by Date, Day, and Time Slot"</span>,</span>
+<span id="cb9-7">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Date"</span>,</span>
+<span id="cb9-8">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Stadium Attendance"</span>,</span>
+<span id="cb9-9">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Time Slot"</span></span>
+<span id="cb9-10">  )</span></code></pre></div></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://your-website-url.example.com/posts/second_blog_post/index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now we are taking a look at how day of week, time of day and week within the season all impact stadium attendance. Looking at Monday, we can see that all the games occurred during the primetime slot and many games were in between 60,000 and 80,000 attendees. Moving to Thursday, many of the games also occurred during the primetime slot besides a couple of games in late November. These games were the Thanksgiving games, and we can see the afternoon game had the highest attendance for all Thursday games. This is because it has hosted by the Dallas Cowboys who have the largest stadium, and it is an NFL traditional for the Cowboys to host a thanksgiving game.</p>
+<p>Next is the couple of Saturday games, this only happens during one week during the season when there is no college football that week, and the people need something to watch on that Saturday. For Sunday games, they contain many games from all time slots, a majority of the games having between 60,000 and 80,000 attendees, with some outliers due to stadiums being bigger or smaller than usual. Also, compared to the weekday games, there are more games below 60,000 attendees because there are also more midday and afternoon games which are less desirable to go to. Over the course of the entire season the attendance remains the same for the most part.</p>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>The analysis doesn’t provide much evidence that NFL stadium attendance varies by time of day, day of week, and week within the season. As week within the season seemed like it didn’t change the attendance numbers at all. However, there was some evidence that attendance varies between timeslots and days because these two are tied together as Monday and Thursday games almost primarily hold primetime games. In those games it seems like stadium attendance is a little bit higher because of factors including better matchups between teams and easier to fit into peoples schedules.</p>
+<p>With additional data, a next step could be to incorporate the maximum capacity for each stadium and then take the stadium attendance rate. This would help filter how larger stadiums like the Cowboys stadium and smaller stadiums like the Chargers stadium. It would be easier to yes it attendance rate changes by time of day, day of week, and week within the season. My hypothesis would be that there would be a lot more variance in stadium attendance later into the season compared to earlier in the season because some teams are fighter for the playoffs where the stadiums will be sold out. And other teams stadiums will not be filled because their season is already over. This is difficult to convey when I used the attendance count rather than rate because of the drastically different stadium sizes.</p>
+</section>
+<section id="connection-to-class-ideas" class="level1">
+<h1>Connection to Class Ideas</h1>
+<p>The first plot was a lollipop plot for the mean attendance by each week, I just wanted to show the average and didn’t care about showing the distribution of the data in this plot.</p>
+<p>For the second plot, I used a side-by-side boxplot because it effectively displays a single quantitative and a single categorical variables, and makes it easy to see the differences in distributions in attendance between different time slots. A unordered color palette was used because it is just a categorical variable with no relation to the other categories.</p>
+<p>For the third plot, I faceted by the day and color coded by the time slot so that the plot was easier to read and so that viewers could see all the different variables at once. All the plots are intentionally simple, so viewers can quickly understand the patterns without being overwhelmed.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>analysis</category>
+  <guid>https://your-website-url.example.com/posts/second_blog_post/</guid>
+  <pubDate>Tue, 17 Feb 2026 05:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Premier League Blog Post</title>
   <dc:creator>Cooper Olney</dc:creator>
