@@ -1,5 +1,5 @@
 ---
-title: "Style of Soccer in the Premier League"
+title: "Premier League Playing Style"
 author: "Cooper Olney"
 date: "2026-02-04"
 categories: [analysis]
