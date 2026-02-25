@@ -1,5 +1,5 @@
 ---
-title: "Premier League Blog Post"
+title: "Style of Soccer in the Premier League"
 author: "Cooper Olney"
 date: "2026-02-04"
 categories: [analysis]

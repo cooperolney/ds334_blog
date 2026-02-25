@@ -4,7 +4,7 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "About this blog"
+    "text": "This blog contains posts from the Data Visualization course at St. Lawrence University."
   },
   {
     "objectID": "posts/first_blog_post/index.html",
@@ -40,20 +40,6 @@
     "title": "Premier League Blog Post",
     "section": "Plot 3: Shot Difference by Match Outcome",
     "text": "Plot 3: Shot Difference by Match Outcome\n\nggplot(data = soccer, aes(x = FTR, y = shot_diff, fill = FTR)) +\n  geom_boxplot() +\n  geom_hline(yintercept = 0, linetype = \"dashed\") + \n  scale_x_discrete(labels = c(\"A\" = \"Away Win\", \"D\" = \"Draw\", \"H\" = \"Home Win\")) +\n  labs( title = \"Shot Difference by Match Outcome\", \n        x = \"Final Match Result\", \n        y = \"Home Shots − Away Shots\") + \n  theme_minimal() + \n  ylim(-29, 29) +\n  theme(legend.position = \"none\") +\n  coord_flip()\n\n\n\n\n\n\n\n\nThe boxplots show a clear relationship between shot difference and the final match result. When the away team wins, the median shot difference is around -2, meaning that away victories typically occur when the away team is able to generate slightly more attacking opportunities than the home team.\nFor drawn matches, the median shot difference is about 2 suggesting that home teams still tend to take more shots even when the match ends level. Which is consistent with the idea that away teams often play more defensively and are satisfied with drawing matches away from home. When the home team wins, the median show difference rises to around 7, showing that home victories are strongly associated with attacking play style where the home team dominates the possession of the ball.\nOverall, this plot supports the narrative that home teams generally play a more attacking style, while the away team adopts more defensive strategies. The plot also shows that the amount of attacking pressure a team can apply is potentially associated with the outcome of the match."
-  },
-  {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
-    "title": "Welcome To My Blog",
-    "section": "",
-    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
-  },
-  {
-    "objectID": "posts/post-with-code/index.html",
-    "href": "posts/post-with-code/index.html",
-    "title": "Post With Code",
-    "section": "",
-    "text": "This is a post with executable code.\n\n1 + 1\n\n[1] 2"
   },
   {
     "objectID": "posts/second_blog_post/index.html",
@@ -93,8 +79,8 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "ds334_blog",
+    "title": "Data Visualization Blog",
     "section": "",
-    "text": "NFL Stadium Attendance Blog Post\n\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nFeb 18, 2026\n\n\nCooper Olney\n\n\n\n\n\n\n\n\n\n\n\n\nPremier League Blog Post\n\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nFeb 4, 2026\n\n\nCooper Olney\n\n\n\n\n\n\n\n\n\n\n\n\nPost With Code\n\n\n\nnews\n\ncode\n\nanalysis\n\n\n\n\n\n\n\n\n\nJan 28, 2026\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJan 25, 2026\n\n\nTristan O’Malley\n\n\n\n\n\nNo matching items"
+    "text": "NFL Stadium Attendance\n\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nFeb 18, 2026\n\n\nCooper Olney\n\n\n\n\n\n\n\n\n\n\n\n\nStyle of Soccer in the Premier League\n\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nFeb 4, 2026\n\n\nCooper Olney\n\n\n\n\n\nNo matching items"
   }
 ]
