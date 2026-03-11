@@ -195,11 +195,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
-<p>The data used in this analysis contains information on species that have been recorded in Yellowstone National Park. The dataset includes details about different organisms found within the park, it contains 4,179 observations, each corresponding to a species recorded within the park.</p>
+<p>The data used in this analysis contains information on species that have been recorded in Yellowstone National Park. The dataset includes details about different organisms found within the park, it contains 4179 observations, each corresponding to a species recorded within the park.</p>
 <p>The variables I am most interested in are CategoryName, which represents the type of organism, along with Nativeness, which indicates whether a species is native to the region or not. These variables show how biodiversity in Yellowstone is distributed across different types of organisms and whether most species present in the park are native or non-native.</p>
 <p>This leads to my primary question of interest:</p>
 <p><strong>What does the composition of species in Yellowstone National Park reveal about the park’s biodiversity and the presence of native vs non-native species? </strong></p>
-<p>The data was accessed through the TidyTuesday project on a GitHub repository. The original source of the data can be found here: https://irma.nps.gov/NPSpecies/Search/SpeciesList.</p>
+<p>The data was accessed through the TidyTuesday project on a GitHub repository. The original source of the data can be found [here]. (https://irma.nps.gov/NPSpecies/Search/SpeciesList)</p>
 <p>Some additional context about Yellowstone and the National Park system is helpful for interpreting this data. The National Park Service maintains detailed records of species that occur within park boundaries through a combination of field observations, research studies, and verified documentation. These records help scientists and park managers monitor biodiversity and identify potential conservation concerns such as the introduction of non-native species.</p>
 <p>Yellowstone National Park is one of the most biologically diverse parks in the United States, containing a wide range of ecosystems including forests, grasslands, rivers, and geothermal areas. Because of this ecological diversity, the park supports thousands of different species across many groups. Understanding how these species are distributed across categories and whether they are native or non-native provides insight into the overall structure of biodiversity within the park.</p>
 </section>
@@ -230,11 +230,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> CategoryName, <span class="at">xend =</span> CategoryName, <span class="at">y =</span> <span class="dv">0</span>, <span class="at">yend =</span> n),</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">"darkgreen"</span>) <span class="sc">+</span></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"darkgreen"</span>) <span class="sc">+</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Species Counts by Category in Yellowstone"</span>,</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Species Category"</span>,</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Number of Species"</span>) <span class="sc">+</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> n), <span class="at">hjust =</span> <span class="sc">-</span><span class="fl">0.2</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Species Counts by Category in Yellowstone"</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Species Category"</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Number of Species"</span>) <span class="sc">+</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -243,7 +244,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>From the lollipop plot we can see that the majority of species recorded in Yellowstone fall within the insect and vascular plant categories. This makes sense because plants and insects tend to have far more species than larger animals in most ecosystems. The next largest category is birds, while physically larger groups such as mammals, fish, reptiles, and amphibians contain far fewer species.</p>
+<p>From the lollipop plot we can see that the majority of species recorded in Yellowstone fall within the insect and vascular plant categories. This makes sense because plants and insects tend to have far more species than larger organisms in most ecosystems. The next largest category is birds, while physically larger groups such as mammals, fish, reptiles, and amphibians contain far fewer species.</p>
 <p>These patterns reflect how biodiversity is typically structured in nature. Smaller organisms with many ecological niches, like insects and plants, dominate species counts, while larger organisms make up a smaller portion of total biodiversity. Overall, the plot shows that Yellowstone’s biodiversity is largely driven by plant and insect species.</p>
 </section>
 <section id="plot-2-nativeness-of-species-across-categories" class="level2">
@@ -265,8 +266,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>The heatmap shows how the nativeness of species varies across different categories. The largest combination is native vascular plants, with roughly 1,200 species. Insects also have a large number of species, although many are classified as unknown, likely because determining the origin of many insect species can be difficult.</p>
-<p>Across most categories, the majority of species appear to be native rather than non-native, suggesting that Yellowstone has maintained much of its natural ecological structure. Some categories contain unknown or NA values, which likely indicates that the nativeness of those species has not yet been classified, this is likely the case for Chromista as they are small aquatic organisms.</p>
+<p>The heatmap shows how the nativeness of species varies across different categories. The largest combination is native vascular plants, with roughly 1200 species. Insects also have a large number of species, although many are classified as unknown, likely because determining the origin of many insect species can be difficult.</p>
+<p>Across most categories, the majority of species appear to be native rather than non-native, suggesting that Yellowstone has maintained much of its natural ecological structure. Some categories contain unknown or NA values, which likely indicates that the nativeness of those species has not yet been classified, this is likely the case for Chromista as they are single celled aquatic organisms.</p>
 <p>Overall, the heatmap suggests that most biodiversity within Yellowstone is composed of native species.</p>
 </section>
 <section id="plot-3-native-vs-non-native-species-by-category" class="level2">
@@ -278,8 +279,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">"Species Category"</span>,</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"Number of Species"</span>,</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> <span class="st">"Nativeness"</span>) <span class="sc">+</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>() <span class="sc">+</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">na.value =</span> <span class="st">"gray"</span>) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
@@ -290,7 +291,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The stacked bar plot provides a clearer view of the proportion of native versus non-native species within each category. Most categories are dominated by native species, with smaller proportions of non-native or unknown classifications.</p>
-<p>One category that stands out is fish, which appears to have a relatively larger proportion of non-native species. This may be due to the fact in Yellowstone a large number of trout were introduced to support recreational fishing.</p>
+<p>One category that stands out is fish, which appears to have a relatively larger proportion of non-native species. This may be due to the fact that Yellowstone had a large number of trout introduced to support recreational fishing.</p>
 <p>Overall, Yellowstone appears to maintain a strong majority of native species across most organism categories, which is important for preserving the natural balance of the park’s ecosystem.</p>
 </section>
 </section>
@@ -302,9 +303,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="connection-to-class-ideas" class="level1">
 <h1>Connection to Class Ideas</h1>
-<p>The first visualization uses a lollipop chart to display the number of species within each category. Because the goal was to compare counts across several categories, the lollipop plot effectively highlights differences while keeping the visualization simple and uncluttered.</p>
+<p>The first visualization uses a lollipop chart to display the number of species within each category, as well as labeling the count for each category. Because the goal was to compare counts across several categories, the lollipop plot effectively highlights differences while keeping the visualization simple and uncluttered.</p>
 <p>The second visualization uses a heatmap to examine the relationship between two categorical variables. Heatmaps are useful for identifying patterns across combinations of categories and allow viewers to quickly see where native, non-native, or unknown species are most common.</p>
-<p>The third visualization uses a stacked proportional bar chart to show the composition of native versus non-native species within each category. Using proportions instead of raw counts makes it easier to compare categories that contain very different numbers of species.</p>
+<p>The third visualization uses a stacked proportional bar chart to show the composition of native versus non-native species within each category. Using proportions instead of raw counts makes it easier to compare categories that contain very different numbers of species. I kept NA in the second and third plots because they often appear in physically smaller categories, where the origin of the species may be more difficult to determine or where less research has been conducted.</p>
 <p>Overall, these visualizations were intentionally designed to be simple and uncluttered to communicate patterns in the data. The goal was to present the information in a way that allows viewers to quickly interpret how biodiversity in Yellowstone is distributed across species categories and nativeness.</p>
 
 

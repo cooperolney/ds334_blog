@@ -7,7 +7,7 @@ categories: [analysis]
 
 # Introduction
 
-The data used in this analysis contains information on species that have been recorded in Yellowstone National Park. The dataset includes details about different organisms found within the park, it contains 4,179 observations, each corresponding to a species recorded within the park.
+The data used in this analysis contains information on species that have been recorded in Yellowstone National Park. The dataset includes details about different organisms found within the park, it contains 4179 observations, each corresponding to a species recorded within the park.
 
 The variables I am most interested in are CategoryName, which represents the type of organism, along with Nativeness, which indicates whether a species is native to the region or not. These variables show how biodiversity in Yellowstone is distributed across different types of organisms and whether most species present in the park are native or non-native.
  
@@ -15,7 +15,7 @@ This leads to my primary question of interest:
 
 **What does the composition of species in Yellowstone National Park reveal about the park's biodiversity and the presence of native vs non-native species? **
 
-The data was accessed through the TidyTuesday project on a GitHub repository. The original source of the data can be found here: https://irma.nps.gov/NPSpecies/Search/SpeciesList.
+The data was accessed through the TidyTuesday project on a GitHub repository. The original source of the data can be found [here]. (https://irma.nps.gov/NPSpecies/Search/SpeciesList)
 
 Some additional context about Yellowstone and the National Park system is helpful for interpreting this data. The National Park Service maintains detailed records of species that occur within park boundaries through a combination of field observations, research studies, and verified documentation. These records help scientists and park managers monitor biodiversity and identify potential conservation concerns such as the introduction of non-native species.
 
@@ -50,6 +50,7 @@ ggplot(data = category_counts, aes(x = CategoryName, y = n)) +
   geom_segment(aes(x = CategoryName, xend = CategoryName, y = 0, yend = n),
                color = "darkgreen") +
   geom_point(color = "darkgreen") +
+  geom_text(aes(label = n), hjust = -0.2, size = 3) +
   coord_flip() +
   labs(title = "Species Counts by Category in Yellowstone",
        x = "Species Category",
@@ -58,7 +59,7 @@ ggplot(data = category_counts, aes(x = CategoryName, y = n)) +
   
 ```
 
-From the lollipop plot we can see that the majority of species recorded in Yellowstone fall within the insect and vascular plant categories. This makes sense because plants and insects tend to have far more species than larger animals in most ecosystems. The next largest category is birds, while physically larger groups such as mammals, fish, reptiles, and amphibians contain far fewer species.
+From the lollipop plot we can see that the majority of species recorded in Yellowstone fall within the insect and vascular plant categories. This makes sense because plants and insects tend to have far more species than larger organisms in most ecosystems. The next largest category is birds, while physically larger groups such as mammals, fish, reptiles, and amphibians contain far fewer species.
 
 These patterns reflect how biodiversity is typically structured in nature. Smaller organisms with many ecological niches, like insects and plants, dominate species counts, while larger organisms make up a smaller portion of total biodiversity. Overall, the plot shows that Yellowstone’s biodiversity is largely driven by plant and insect species.
 
@@ -76,9 +77,9 @@ ggplot(data = heatmap_data, aes(x = Nativeness, y = CategoryName, fill = n)) +
        fill = "Number of Species")
 ```
 
-The heatmap shows how the nativeness of species varies across different categories. The largest combination is native vascular plants, with roughly 1,200 species. Insects also have a large number of species, although many are classified as unknown, likely because determining the origin of many insect species can be difficult.
+The heatmap shows how the nativeness of species varies across different categories. The largest combination is native vascular plants, with roughly 1200 species. Insects also have a large number of species, although many are classified as unknown, likely because determining the origin of many insect species can be difficult.
 
-Across most categories, the majority of species appear to be native rather than non-native, suggesting that Yellowstone has maintained much of its natural ecological structure. Some categories contain unknown or NA values, which likely indicates that the nativeness of those species has not yet been classified, this is likely the case for Chromista as they are small aquatic organisms.
+Across most categories, the majority of species appear to be native rather than non-native, suggesting that Yellowstone has maintained much of its natural ecological structure. Some categories contain unknown or NA values, which likely indicates that the nativeness of those species has not yet been classified, this is likely the case for Chromista as they are single celled aquatic organisms.
 
 Overall, the heatmap suggests that most biodiversity within Yellowstone is composed of native species.
 
@@ -92,14 +93,14 @@ ggplot(data = yellowstone_species, aes(x = CategoryName, fill = Nativeness)) +
       x = "Species Category",
       y = "Number of Species",
       fill = "Nativeness") +
-  scale_fill_viridis_d() +
-  theme_minimal(base_size = 14) +
+  scale_fill_viridis_d(na.value = "gray") +
+  theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 The stacked bar plot provides a clearer view of the proportion of native versus non-native species within each category. Most categories are dominated by native species, with smaller proportions of non-native or unknown classifications.
 
-One category that stands out is fish, which appears to have a relatively larger proportion of non-native species. This may be due to the fact in Yellowstone a large number of trout were introduced to support recreational fishing.
+One category that stands out is fish, which appears to have a relatively larger proportion of non-native species. This may be due to the fact that Yellowstone had a large number of trout introduced to support recreational fishing.
 
 Overall, Yellowstone appears to maintain a strong majority of native species across most organism categories, which is important for preserving the natural balance of the park’s ecosystem.
 
@@ -113,10 +114,10 @@ With additional data or more time, a useful next step would be to incorporate va
 
 # Connection to Class Ideas
 
-The first visualization uses a lollipop chart to display the number of species within each category. Because the goal was to compare counts across several categories, the lollipop plot effectively highlights differences while keeping the visualization simple and uncluttered.
+The first visualization uses a lollipop chart to display the number of species within each category, as well as labeling the count for each category. Because the goal was to compare counts across several categories, the lollipop plot effectively highlights differences while keeping the visualization simple and uncluttered.
 
 The second visualization uses a heatmap to examine the relationship between two categorical variables. Heatmaps are useful for identifying patterns across combinations of categories and allow viewers to quickly see where native, non-native, or unknown species are most common.
 
-The third visualization uses a stacked proportional bar chart to show the composition of native versus non-native species within each category. Using proportions instead of raw counts makes it easier to compare categories that contain very different numbers of species.
+The third visualization uses a stacked proportional bar chart to show the composition of native versus non-native species within each category. Using proportions instead of raw counts makes it easier to compare categories that contain very different numbers of species. I kept NA in the second and third plots because they often appear in physically smaller categories, where the origin of the species may be more difficult to determine or where less research has been conducted.
 
 Overall, these visualizations were intentionally designed to be simple and uncluttered to communicate patterns in the data. The goal was to present the information in a way that allows viewers to quickly interpret how biodiversity in Yellowstone is distributed across species categories and nativeness.
