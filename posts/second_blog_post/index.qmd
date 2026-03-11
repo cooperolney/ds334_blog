@@ -145,6 +145,4 @@ The first plot uses a lollipop chart to display the mean attendance for each wee
 
 For the second plot, I used a side-by-side boxplot because it effectively displays the relationship between one quantitative variable (attendance) and one categorical variable (time slot). Boxplots are useful for comparing distributions, as they show the median, spread, and potential outliers within each group. This makes it easy to see how attendance differs across time slots. An unordered color palette was appropriate because time slot is a categorical variable without a numeric progression.
 
-For the third plot, I faceted by the day and color coded by the time slot so that the plot was easier to read and so that viewers could see all the different variables at once. All the plots are intentionally simple, so viewers can quickly understand the patterns without being overwhelmed.
-
 For the third plot, I used faceting by day of the week and color coding by time slot to allow viewers to examine multiple variables simultaneously. Both of these are effective ways to display multivariate relationships without overcrowding the plot. Overall, the plots were intentionally designed to be simple and uncluttered. By avoiding unnecessary complexity, the visualizations allow viewers to quickly interpret patterns in attendance without being overwhelmed by excessive detail.

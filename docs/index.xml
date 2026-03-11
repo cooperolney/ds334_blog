@@ -10,7 +10,349 @@
 <atom:link href="https://your-website-url.example.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A blog built with Quarto</description>
 <generator>quarto-1.8.25</generator>
-<lastBuildDate>Wed, 18 Feb 2026 05:00:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 10 Mar 2026 04:00:00 GMT</lastBuildDate>
+<item>
+  <title>Yellowstone Biodiversity</title>
+  <dc:creator>Cooper Olney</dc:creator>
+  <link>https://your-website-url.example.com/posts/third_blog_post/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>The data used in this analysis contains information on species that have been recorded in Yellowstone National Park. The dataset includes details about different organisms found within the park, it contains 4,179 observations, each corresponding to a species recorded within the park.</p>
+<p>The variables I am most interested in are CategoryName, which represents the type of organism, along with Nativeness, which indicates whether a species is native to the region or not. These variables show how biodiversity in Yellowstone is distributed across different types of organisms and whether most species present in the park are native or non-native.</p>
+<p>This leads to my primary question of interest:</p>
+<p><strong>What does the composition of species in Yellowstone National Park reveal about the park’s biodiversity and the presence of native vs non-native species? </strong></p>
+<p>The data was accessed through the TidyTuesday project on a GitHub repository. The original source of the data can be found here: https://irma.nps.gov/NPSpecies/Search/SpeciesList.</p>
+<p>Some additional context about Yellowstone and the National Park system is helpful for interpreting this data. The National Park Service maintains detailed records of species that occur within park boundaries through a combination of field observations, research studies, and verified documentation. These records help scientists and park managers monitor biodiversity and identify potential conservation concerns such as the introduction of non-native species.</p>
+<p>Yellowstone National Park is one of the most biologically diverse parks in the United States, containing a wide range of ecosystems including forests, grasslands, rivers, and geothermal areas. Because of this ecological diversity, the park supports thousands of different species across many groups. Understanding how these species are distributed across categories and whether they are native or non-native provides insight into the overall structure of biodiversity within the park.</p>
+</section>
+<section id="primary-visualizations" class="level1">
+<h1>Primary Visualizations</h1>
+<section id="setting-up-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="setting-up-the-data">Setting up the Data</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidyverse)</span></code></pre></div></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">most_visited_nps_species_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> readr<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2024/2024-10-08/most_visited_nps_species_data.csv'</span>)</span></code></pre></div></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Data Prep</span></span>
+<span id="cb3-2"> yellowstone_species <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> most_visited_nps_species_data <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb3-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(ParkCode <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"YELL"</span>)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb3-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">select</span>(ParkName, CategoryName, Order, Family, TaxonRecordStatus, CommonNames, ParkAccepted, Sensitive, RecordStatus, Occurrence, Nativeness, Abundance, NPSTags, References, Observations, Vouchers, GRank, SRank)</span></code></pre></div></div>
+</div>
+</section>
+<section id="plot-1-species-counts-by-category-in-yellowstone" class="level2">
+<h2 class="anchored" data-anchor-id="plot-1-species-counts-by-category-in-yellowstone">Plot 1: Species Counts by Category in Yellowstone</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">category_counts <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> yellowstone_species <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">count</span>(CategoryName) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb4-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">CategoryName =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fct_reorder</span>(CategoryName, n))</span>
+<span id="cb4-3"></span>
+<span id="cb4-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> category_counts, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> CategoryName, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> n)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_segment</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> CategoryName, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xend =</span> CategoryName, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">yend =</span> n),</span>
+<span id="cb4-6">               <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"darkgreen"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_point</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"darkgreen"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">coord_flip</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Species Counts by Category in Yellowstone"</span>,</span>
+<span id="cb4-10">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Species Category"</span>,</span>
+<span id="cb4-11">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Number of Species"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>()</span></code></pre></div></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://your-website-url.example.com/posts/third_blog_post/index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>From the lollipop plot we can see that the majority of species recorded in Yellowstone fall within the insect and vascular plant categories. This makes sense because plants and insects tend to have far more species than larger animals in most ecosystems. The next largest category is birds, while physically larger groups such as mammals, fish, reptiles, and amphibians contain far fewer species.</p>
+<p>These patterns reflect how biodiversity is typically structured in nature. Smaller organisms with many ecological niches, like insects and plants, dominate species counts, while larger organisms make up a smaller portion of total biodiversity. Overall, the plot shows that Yellowstone’s biodiversity is largely driven by plant and insect species.</p>
+</section>
+<section id="plot-2-nativeness-of-species-across-categories" class="level2">
+<h2 class="anchored" data-anchor-id="plot-2-nativeness-of-species-across-categories">Plot 2: Nativeness of Species Across Categories</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">heatmap_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> yellowstone_species <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">count</span>(CategoryName, Nativeness)</span>
+<span id="cb5-2">  </span>
+<span id="cb5-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> heatmap_data, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> Nativeness, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> CategoryName, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> n)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_tile</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_fill_viridis_c</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Nativeness of Species Across Categories"</span>,</span>
+<span id="cb5-7">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Species Category"</span>,</span>
+<span id="cb5-8">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Number of Species"</span>)</span></code></pre></div></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://your-website-url.example.com/posts/third_blog_post/index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The heatmap shows how the nativeness of species varies across different categories. The largest combination is native vascular plants, with roughly 1,200 species. Insects also have a large number of species, although many are classified as unknown, likely because determining the origin of many insect species can be difficult.</p>
+<p>Across most categories, the majority of species appear to be native rather than non-native, suggesting that Yellowstone has maintained much of its natural ecological structure. Some categories contain unknown or NA values, which likely indicates that the nativeness of those species has not yet been classified, this is likely the case for Chromista as they are small aquatic organisms.</p>
+<p>Overall, the heatmap suggests that most biodiversity within Yellowstone is composed of native species.</p>
+</section>
+<section id="plot-3-native-vs-non-native-species-by-category" class="level2">
+<h2 class="anchored" data-anchor-id="plot-3-native-vs-non-native-species-by-category">Plot 3: Native vs Non-Native Species by Category</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> yellowstone_species, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> CategoryName, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> Nativeness)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_bar</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"fill"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Native vs Non-Native Species by Category"</span>,</span>
+<span id="cb6-4">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Species Category"</span>,</span>
+<span id="cb6-5">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Number of Species"</span>,</span>
+<span id="cb6-6">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Nativeness"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_fill_viridis_d</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">base_size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">14</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">axis.text.x =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">angle =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">45</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">hjust =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>))</span></code></pre></div></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://your-website-url.example.com/posts/third_blog_post/index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The stacked bar plot provides a clearer view of the proportion of native versus non-native species within each category. Most categories are dominated by native species, with smaller proportions of non-native or unknown classifications.</p>
+<p>One category that stands out is fish, which appears to have a relatively larger proportion of non-native species. This may be due to the fact in Yellowstone a large number of trout were introduced to support recreational fishing.</p>
+<p>Overall, Yellowstone appears to maintain a strong majority of native species across most organism categories, which is important for preserving the natural balance of the park’s ecosystem.</p>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>Overall, the analysis shows that Yellowstone’s biodiversity is largely dominated by plants and insects, which make up the majority of recorded species in the park. Larger animal groups such as mammals represent a much smaller share of the total species count. Across most categories, the majority of species are native, with relatively small proportions of non-native species. Fish appear to have one of the higher shares of non-native species, which may be related to when many trout were introduced to Yellowstone.</p>
+<p>One limitation of this analysis is that it focuses only on species counts. The data does not reflect population size, ecological impact, or how abundant each species actually is within the park. Because of this, some species may appear equally important in the data even though their real ecological roles differ.</p>
+<p>With additional data or more time, a useful next step would be to incorporate variables such as abundance or find data on population estimates. This would allow for a deeper analysis of not just how many species exist in each category, but also how they contribute to the overall ecosystem and biodiversity of Yellowstone.</p>
+</section>
+<section id="connection-to-class-ideas" class="level1">
+<h1>Connection to Class Ideas</h1>
+<p>The first visualization uses a lollipop chart to display the number of species within each category. Because the goal was to compare counts across several categories, the lollipop plot effectively highlights differences while keeping the visualization simple and uncluttered.</p>
+<p>The second visualization uses a heatmap to examine the relationship between two categorical variables. Heatmaps are useful for identifying patterns across combinations of categories and allow viewers to quickly see where native, non-native, or unknown species are most common.</p>
+<p>The third visualization uses a stacked proportional bar chart to show the composition of native versus non-native species within each category. Using proportions instead of raw counts makes it easier to compare categories that contain very different numbers of species.</p>
+<p>Overall, these visualizations were intentionally designed to be simple and uncluttered to communicate patterns in the data. The goal was to present the information in a way that allows viewers to quickly interpret how biodiversity in Yellowstone is distributed across species categories and nativeness.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>analysis</category>
+  <guid>https://your-website-url.example.com/posts/third_blog_post/</guid>
+  <pubDate>Tue, 10 Mar 2026 04:00:00 GMT</pubDate>
+</item>
 <item>
   <title>NFL Stadium Attendance</title>
   <dc:creator>Cooper Olney</dc:creator>

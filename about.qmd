@@ -13,7 +13,7 @@ about:
 ---
 
 <!-- About this blog -->
-This blog contains posts from the Data Visualization course at St. Lawrence University.
+This blog contains posts created for the Data Visualization course at St. Lawrence University. Each post uses real-world datasets to explore questions through data analysis and visualization.
 
 <!-- extra points on blog post 3 to fix this stuff.
 - change stuff in about.qmd and _quarto.yml, both are in root directories
