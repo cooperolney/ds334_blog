@@ -10,12 +10,12 @@ categories: [analysis]
 The data used in this analysis contains information on species that have been recorded in Yellowstone National Park. The dataset includes details about different organisms found within the park, it contains 4179 observations, each corresponding to a species recorded within the park.
 
 The variables I am most interested in are CategoryName, which represents the type of organism, along with Nativeness, which indicates whether a species is native to the region or not. These variables show how biodiversity in Yellowstone is distributed across different types of organisms and whether most species present in the park are native or non-native.
- 
+
 This leads to my primary question of interest:
 
-**What does the composition of species in Yellowstone National Park reveal about the park's biodiversity and the presence of native vs non-native species? **
+**What does the composition of species in Yellowstone National Park reveal about the park's biodiversity and the presence of native vs non-native species?**
 
-The data was accessed through the TidyTuesday project on a GitHub repository. The original source of the data can be found [here]. (https://irma.nps.gov/NPSpecies/Search/SpeciesList)
+The data was accessed through the TidyTuesday project on a GitHub repository. The original source of the data can be found \[here\]. (https://irma.nps.gov/NPSpecies/Search/SpeciesList)
 
 Some additional context about Yellowstone and the National Park system is helpful for interpreting this data. The National Park Service maintains detailed records of species that occur within park boundaries through a combination of field observations, research studies, and verified documentation. These records help scientists and park managers monitor biodiversity and identify potential conservation concerns such as the introduction of non-native species.
 
@@ -63,7 +63,6 @@ From the lollipop plot we can see that the majority of species recorded in Yello
 
 These patterns reflect how biodiversity is typically structured in nature. Smaller organisms with many ecological niches, like insects and plants, dominate species counts, while larger organisms make up a smaller portion of total biodiversity. Overall, the plot shows that Yellowstone’s biodiversity is largely driven by plant and insect species.
 
-
 ## Plot 2: Nativeness of Species Across Categories
 
 ```{r message=FALSE, warning=FALSE}
@@ -82,7 +81,6 @@ The heatmap shows how the nativeness of species varies across different categori
 Across most categories, the majority of species appear to be native rather than non-native, suggesting that Yellowstone has maintained much of its natural ecological structure. Some categories contain unknown or NA values, which likely indicates that the nativeness of those species has not yet been classified, this is likely the case for Chromista as they are single celled aquatic organisms.
 
 Overall, the heatmap suggests that most biodiversity within Yellowstone is composed of native species.
-
 
 ## Plot 3: Native vs Non-Native Species by Category
 
